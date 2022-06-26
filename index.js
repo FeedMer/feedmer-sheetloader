@@ -2,7 +2,7 @@ require('dotenv').config()
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const db = require('./DBlib');
 const request = require("request");
-const minUpdInterval = 60*1000;
+const minUpdInterval = 5*60*1000;
 const FEEDMER_URL = process.env.FEEDMER_URL
 var graphs = {};
 
@@ -99,8 +99,10 @@ async function updateGraphs(){
             for(let j=0; j<cafesInfo.length; j++)
                 await shuffleGraphs(cafesInfo[j], superBotInfo[i]);
         }
-        
-        request.get(FEEDMER_URL + "/updateGraphs", (err, response, body) => { 
+        request.get({
+            headers: {'content-type' : 'application/json', "User-Agent" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:77.0) Gecko/20100101 Firefox/77.0"},
+            url: FEEDMER_URL + "/updateGraphs",
+        }, function(err, response, body){
             if (err || (response.statusCode !== 200)) {   
                 if(err) console.log("Calling FeedMer updateGraphs failed!: " + err);
                 else console.log("Calling FeedMer updateGraphs failed!: " + response.statusCode + '. ' + response.statusMessage);
