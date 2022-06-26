@@ -99,6 +99,7 @@ async function updateGraphs(){
             for(let j=0; j<cafesInfo.length; j++)
                 await shuffleGraphs(cafesInfo[j], superBotInfo[i]);
         }
+        
         request.get(FEEDMER_URL + "/updateGraphs", (err, response, body) => { 
             if (err || (response.statusCode !== 200)) {   
                 if(err) console.log("Calling FeedMer updateGraphs failed!: " + err);
